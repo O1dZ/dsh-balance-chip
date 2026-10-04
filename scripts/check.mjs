@@ -22,7 +22,7 @@ const sensitive = [
 ]
 let checked = 0
 for (const path of await walk(root)) {
-  if (path.endsWith('.png')) continue
+  if (/\.(?:png|jpe?g)$/i.test(path)) continue
   const text = await readFile(path, 'utf8')
   for (const pattern of sensitive) assert.equal(pattern.test(text), false, 'Potential private content in ' + relative(root, path))
   if (/\.(?:js|mjs)$/.test(path)) {

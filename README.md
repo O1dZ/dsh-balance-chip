@@ -8,15 +8,19 @@ DeepSeek Harness 输入框工具栏的供应商余额圆环。悬停看余额，
 
 ## 界面预览
 
-深色主题：
+实际 Harness 界面，圆环位于模型选择器左侧：
+
+![Harness 实机界面的余额圆环位置](preview/dsh-balance-chip-harness.jpg)
+
+深色主题详情（模拟数据）：
 
 ![深色主题详情（模拟余额）](preview/dsh-balance-chip-preview.png)
 
-浅色主题：
+浅色主题详情（模拟数据）：
 
 ![浅色主题详情（模拟余额）](preview/dsh-balance-chip-light.png)
 
-两张截图均来自模拟测试页面，金额不是实际账号余额。
+首张为实际应用截图，已收起侧栏且未展开真实余额；两张详情图使用模拟金额，均不包含测试输出或真实账号数据。
 
 ## 功能
 

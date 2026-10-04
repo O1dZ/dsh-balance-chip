@@ -8,15 +8,19 @@ A provider balance ring in the DeepSeek Harness composer toolbar. Hover to see t
 
 ## Screenshots
 
-Dark theme:
+Actual Harness window, with the balance ring to the left of the model selector:
+
+![Balance ring location in the actual Harness application](preview/dsh-balance-chip-harness.jpg)
+
+Dark theme details (simulated data):
 
 ![Dark theme balance details with simulated data](preview/dsh-balance-chip-preview.png)
 
-Light theme:
+Light theme details (simulated data):
 
 ![Light theme balance details with simulated data](preview/dsh-balance-chip-light.png)
 
-Both screenshots come from the mock UI test. The amounts are simulated, not real account balances. The plugin UI currently follows the implementation's Chinese labels.
+The first image is an actual application screenshot with the sidebar collapsed and real balance details closed. The two detail images use simulated amounts. No test output or real account data is included. The plugin UI currently follows the implementation's Chinese labels.
 
 ## Features
 
