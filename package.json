@@ -1,0 +1,78 @@
+{
+  "name": "dsh-balance-chip",
+  "version": "1.1.0",
+  "description": "输入框余额圆环：悬停看余额、点击看详情，跟随模型自动查询供应商余额。",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "deepseek",
+    "harness",
+    "dsh",
+    "dsh-plugin",
+    "balance",
+    "credit"
+  ],
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": "./client/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./preview/dsh-balance-chip-preview.png": "./preview/dsh-balance-chip-preview.png",
+    "./package.json": "./package.json",
+    "./typert": "./lib/typert.js"
+  },
+  "files": [
+    "lib",
+    "client",
+    "preview",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-model-selection"
+      ]
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "~4.0.4",
+    "@deepseek-ai/dsh-typert-protocol": "~0.2.0-rc.2",
+    "@deepseek-ai/dsh-launch-environment": "~0.2.0-rc.2"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/cordis": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-typert-protocol": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-launch-environment": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "node --test tests/balance.test.mjs",
+    "test:integration": "node --test tests/cordis.test.mjs tests/typert.test.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/O1dZ/dsh-balance-chip.git"
+  },
+  "homepage": "https://github.com/O1dZ/dsh-balance-chip#readme",
+  "bugs": {
+    "url": "https://github.com/O1dZ/dsh-balance-chip/issues"
+  },
+  "engines": {
+    "node": ">=22.14.0"
+  }
+}

@@ -1,0 +1,33 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>圆环渲染验证</title>
+<style>
+html{color-scheme:dark}body{margin:0;background:#18181b;color:#eee;font:14px/1.6 'Microsoft YaHei','Segoe UI',sans-serif;--dsw-font-family:'Microsoft YaHei','Segoe UI',sans-serif;--dsw-alias-label-primary:#eee;--dsw-alias-label-secondary:#bbb;--dsw-alias-label-tertiary:#999;--dsw-alias-border-l3:#4a4a4e;--dsw-alias-bg-base:#303033;--dsw-alias-bg-layer-2:#2c2c2e;--dsw-menu-surface-fill:#30303394;--dsw-alias-interactive-bg-hover:#ffffff12}
+body.light{background:#f7f7f8;color:#222;--dsw-alias-label-primary:#222;--dsw-alias-label-secondary:#555;--dsw-alias-label-tertiary:#777;--dsw-alias-border-l3:#ddd;--dsw-alias-bg-base:#fff;--dsw-alias-bg-layer-2:#fff;--dsw-menu-surface-fill:#f8f9fa94;--dsw-alias-interactive-bg-hover:#00000009}
+main{max-width:740px;margin:42px auto}h1{font-size:22px;font-weight:500;margin-bottom:6px}.intro{color:#929299}.composer{margin-top:400px;background:var(--dsw-alias-bg-base);border-radius:20px;padding:14px 18px;overflow:hidden}.placeholder{color:var(--dsw-alias-label-tertiary);margin-bottom:30px}.bar{display:flex;align-items:center;gap:12px;font-size:13px}.spacer{flex:1}.send{width:34px;height:34px;border-radius:50%;background:#637da7;color:#ddd;display:grid;place-items:center}.tooltip{position:fixed;bottom:190px;right:260px;background:#222;color:white;border-radius:6px;padding:5px 10px;font-size:12px}.report{font:12px/1.6 Consolas,monospace;color:#67c58a;white-space:pre-wrap;margin-top:20px}
+</style><script type="importmap">{"imports":{"react":"https://esm.sh/react@18.3.1","react/jsx-runtime":"https://esm.sh/react@18.3.1/jsx-runtime","react-dom":"https://esm.sh/react-dom@18.3.1?external=react","react-dom/client":"https://esm.sh/react-dom@18.3.1/client?external=react"}}</script></head><body><main><h1>供应商余额圆环</h1><div class="intro">交互渲染测试 · 使用模拟余额</div><div class="composer"><div class="placeholder">发消息或创建任务，调用指令，@ 文件或对话</div><div class="bar"><span>＋</span><span>♧ 完全权限 ⌄</span><div class="spacer"></div><div id="root"></div><span id="model">DeepSeek-V4-Flash Max ⌄</span><span class="send">↑</span></div></div><div class="report" id="report">加载测试…</div></main>
+<script type="module">
+import * as React from 'react';import * as JSX from 'react/jsx-runtime';import * as ReactDOM from 'react-dom';import {createRoot} from 'react-dom/client';
+if(location.search.includes('light'))document.body.classList.add('light');
+const effects=[];let plugin,registration,current={provider:'deepseek-official',model:'deepseek-v4-flash'};const subscribers=new Set();const calls=[];
+function Tooltip({children,label,disabled}){const[show,setShow]=React.useState(false);return React.createElement('span',{onMouseEnter:()=>setShow(true),onMouseLeave:()=>setShow(false)},children,show&&!disabled&&ReactDOM.createPortal(React.createElement('div',{className:'tooltip'},label),document.body))}
+window.__ModuleLoader__={load(entry){plugin=entry.factory(name=>({'react':React,'react/jsx-runtime':JSX,'react-dom':ReactDOM,'@deepseek-ai/dsh-client-ui-primitives':{Tooltip}}[name]))}};
+const script=document.createElement('script');script.src='../client/client.js';document.head.appendChild(script);await new Promise((ok,no)=>{script.onload=ok;script.onerror=no});
+const directory={load:async()=>{},store:{getSnapshot:()=>({current}),subscribe(fn){subscribers.add(fn);return()=>subscribers.delete(fn)}}};
+const services={locale:{getSnapshot:()=>({active:'zh'})},slots:{inject(_n,fn){fn()},register(meta,component){registration={meta,component};return()=>{}}},modelDirectories:{directoryFor:()=>directory},'remote.balanceRing':{async get(provider){calls.push(provider);return{ok:true,value:{state:'ready',wallets:provider==='openrouter'?[{currency:'USD',total:'12.345'}]:[{currency:'CNY',total:'36.786',paid:'30.786',bonus:'6.00'}],kind:provider==='openrouter'?'key-limit':'balance',at:Date.now()}}}},remote:{$mount:async()=>()=>{}}};
+const ctx={get:key=>services[key],get slots(){return services.slots},get locale(){return services.locale},inject(_keys,fn){void fn(ctx)},effect(fn){const dispose=fn();effects.push(dispose);return dispose}};
+plugin.apply(ctx);createRoot(document.getElementById('root')).render(React.createElement(registration.component,registration.meta.inject('test-session')));
+const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));const lines=[];function check(condition,text){if(!condition)throw Error(text);lines.push('PASS '+text);document.getElementById('report').textContent=lines.join('\n')}
+try{
+await delay(800);const trigger=()=>document.querySelector('.dbc_trigger');
+check(trigger()?.getAttribute('aria-label').includes('¥ 36.78'),'圆环与余额提示已挂载');
+trigger().click();await delay(200);check(document.querySelector('.dbc_panel')?.textContent.includes('赠金余额'),'点击展开充值与赠金详情');
+const bg=getComputedStyle(document.querySelector('.dbc_panel')).backgroundColor;check(bg===(document.body.classList.contains('light')?'rgb(255, 255, 255)':'rgb(44, 44, 46)'),'详情背景为实色，半透明菜单变量不再影响阅读');
+check(document.querySelector('.dbc_panel').parentElement===document.body,'详情挂载到页面根部，避开输入框裁剪');
+current={provider:'openrouter',model:'other/model'};document.getElementById('model').textContent='OpenRouter 模型 ⌄';for(const fn of subscribers)fn();await delay(200);
+check(document.querySelector('.dbc_panel').textContent.includes('API Key 剩余额度')&&document.querySelector('.dbc_panel').textContent.includes('$ 12.34'),'切换供应商立即刷新并区分 API Key 额度');
+document.querySelector('.dbc_refresh').click();await delay(150);check(calls.filter(x=>x==='openrouter').length>=2,'详情刷新按钮可用');
+document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));await delay(100);check(!document.querySelector('.dbc_panel'),'Escape 关闭详情');
+trigger().click();await delay(100);document.body.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}));await delay(100);check(!document.querySelector('.dbc_panel'),'点击外部关闭详情');
+current={provider:'deepseek-official',model:'deepseek-v4-flash'};document.getElementById('model').textContent='DeepSeek-V4-Flash Max ⌄';for(const fn of subscribers)fn();await delay(150);trigger().click();await delay(150);
+trigger().blur();document.title='RENDER OK';lines.push('RENDER OK · '+(document.body.classList.contains('light')?'light':'dark'));document.getElementById('report').textContent=lines.join('\n');
+}catch(error){document.title='RENDER FAILED';document.getElementById('report').textContent='FAIL '+error.stack}
+</script></body></html>

@@ -1,0 +1,15 @@
+name: 功能建议
+description: 提议交互改进或新的公开余额接口
+title: "[Feature] "
+body:
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 使用场景与预期行为
+    validations:
+      required: true
+  - type: textarea
+    id: docs
+    attributes:
+      label: 公开接口文档与余额语义
+      description: 新供应商请说明权限、币种与额度单位，不提交真实请求或凭证。

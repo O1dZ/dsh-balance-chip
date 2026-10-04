@@ -1,0 +1,24 @@
+name: 问题反馈
+description: 报告余额或界面问题，请先脱敏
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: "请勿提交 Key、token、真实 profile、日志或账号截图。请仅使用模拟数据和脱敏信息。"
+  - type: input
+    id: version
+    attributes:
+      label: 插件 / Harness 版本与操作系统
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤与预期 / 实际结果
+    validations:
+      required: true
+  - type: textarea
+    id: provider
+    attributes:
+      label: 供应商类型与脱敏状态
+      description: 不要粘贴密钥、端点认证参数或真实余额。

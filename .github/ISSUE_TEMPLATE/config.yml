@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 私密安全报告
+    url: https://github.com/O1dZ/dsh-balance-chip/security/advisories/new
+    about: 漏洞和敏感问题请私密报告，不要公开凭证。
