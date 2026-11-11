@@ -45,8 +45,13 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
   function ringVisible(index, fill) {
     return index === 0 || (fill !== null && fill > 0)
   }
+  // Usage percentages are floored so the number and the ring agree, and 99.x% never looks like 100%.
+  function usagePercent(row) {
+    const value = Number(row.total)
+    return Number.isFinite(value) ? Math.max(0, Math.min(100, Math.floor(value))) : 0
+  }
   function usageFractions(wallets) {
-    return wallets.map(row => Math.max(0, Math.min(1, Number(row.total) / 100)))
+    return wallets.map(row => usagePercent(row) / 100)
   }
   // Usage rings colour by remaining percentage, mirroring the balance thresholds.
   function usageHealth(remaining) {
@@ -212,10 +217,11 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
       : reference === null || value === null ? null : ringFractions(value, reference)
     const percent = reference === null || value === null ? null : Math.round(Math.max(0, value / reference) * 100)
     const color = snapshot.stale || !primary || reference === null ? 'var(--dsw-alias-label-tertiary,#999)' : value <= 0 ? '#ef6464' : reference && value < reference / 10 ? '#f2b84b' : '#67c58a'
-    const usageColor = row => snapshot.stale ? 'var(--dsw-alias-label-tertiary,#999)' : usageHealth(Number(row.total))
+    // A stale ring keeps its last good colours; only the labels say the value is old.
+    const usageColor = row => usageHealth(usagePercent(row))
     const title = usageMode ? 'Go 套餐剩余' : snapshot.kind === 'key-limit' ? 'API Key 剩余额度' : snapshot.kind === 'quota-units' ? '剩余额度' : '账户余额'
     const label = usageMode
-      ? (snapshot.provider ?? '当前供应商') + ' · ' + title + ' · ' + usageWallets.map(row => (row.label ?? '') + ' ' + Math.round(Number(row.total)) + '%').join(' · ') + (snapshot.stale ? '（上次查询值）' : '')
+      ? (snapshot.provider ?? '当前供应商') + ' · ' + title + ' · ' + usageWallets.map(row => (row.label ?? '') + ' ' + usagePercent(row) + '%').join(' · ') + (snapshot.stale ? '（上次查询值）' : '')
       : (snapshot.provider ?? '当前供应商') + ' · ' + title + ' · ' + amount + (percent === null ? '' : ' · ' + percent + '%') + (snapshot.stale ? '（上次查询值）' : '')
     const [saveState, setSaveState] = react.useState(null)
     const readAmount = (input, key) => {
@@ -260,7 +266,7 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
     })
     const rows = []
     if (usageMode) {
-      for (const row of usageWallets) rows.push(jsxs('div', { className: 'dbc_row', children: [h('span', { children: (row.label ?? '窗口') + ' 剩余' }), h('span', { children: Math.round(Number(row.total)) + '%' + (row.resetAt ? ' · 重置 ' + resetText(row.resetAt) : '') })] }, 'usage-' + (row.label ?? row.currency)))
+      for (const row of usageWallets) rows.push(jsxs('div', { className: 'dbc_row', children: [h('span', { children: (row.label ?? '窗口') + ' 剩余' }), h('span', { children: usagePercent(row) + '%' + (row.resetAt ? ' · 重置 ' + resetText(row.resetAt) : '') })] }, 'usage-' + (row.label ?? row.currency)))
     } else {
       for (const row of snapshot.wallets) {
         rows.push(h('div', { className: 'dbc_amount', children: money(row) }, row.currency + '-total'))
