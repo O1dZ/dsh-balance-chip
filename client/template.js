@@ -266,7 +266,7 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
         jsxs('div', { className: 'dbc_heading', children: [
           h('span', { children: title }),
           jsxs('div', { className: 'dbc_actions', children: [
-            h('button', { className: 'dbc_gear', type: 'button', 'aria-expanded': showConfig, 'aria-label': '参考金额配置', title: '参考金额配置', onClick: toggleConfig, children: h(IconSettingsOutline14, { size: 14 }) }),
+            !usageMode && h('button', { className: 'dbc_gear', type: 'button', 'aria-expanded': showConfig, 'aria-label': '参考金额配置', title: '参考金额配置', onClick: toggleConfig, children: h(IconSettingsOutline14, { size: 14 }) }),
             h('button', { className: 'dbc_refresh', type: 'button', disabled: snapshot.refreshing, onClick: () => { void store.reread() }, children: snapshot.refreshing ? '查询中…' : '刷新' }),
           ] }),
         ] }),
