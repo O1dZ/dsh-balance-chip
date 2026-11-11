@@ -1,10 +1,10 @@
 window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
   const react = require('react')
   const { jsx: h, jsxs } = require('react/jsx-runtime')
-  const { Tooltip } = require('@deepseek-ai/dsh-client-ui-primitives')
+  const { Tooltip, IconSettingsOutline14 } = require('@deepseek-ai/dsh-client-ui-primitives')
   const { createPortal } = require('react-dom')
   const NS = 'dsh-balance-chip'
-  const CSS = '.dbc_root{position:relative;display:flex;align-items:center}.dbc_trigger{appearance:none;display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--dsw-alias-label-tertiary);cursor:pointer}.dbc_trigger:hover{background:var(--dsw-alias-interactive-bg-hover)}.dbc_trigger:focus-visible,.dbc_refresh:focus-visible{outline:2px solid var(--dsw-focus-ring-color,#60a5fa);outline-offset:2px}.dbc_ring{width:20px;height:20px;overflow:visible}.dbc_track{stroke:var(--dsw-alias-border-l3,#555)}.dbc_fill{transition:stroke-dashoffset .25s,stroke .25s;transform:rotate(-90deg);transform-origin:center}.dbc_panel{position:absolute;bottom:calc(100% + 9px);right:0;z-index:1000;width:min(280px,calc(100vw - 32px));box-sizing:border-box;padding:16px;border:1px solid var(--dsw-alias-border-l3,#454545);border-radius:14px;background:var(--dsw-alias-bg-layer-2,var(--dsw-alias-bg-base,#303033));color:var(--dsw-alias-label-primary,#eee);box-shadow:0 8px 32px #0004;font-family:var(--dsw-font-family);font-size:12px;line-height:20px}.dbc_heading{display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:600}.dbc_provider{color:var(--dsw-alias-label-secondary,#bbb);overflow-wrap:anywhere;margin:4px 0 12px}.dbc_amount{font-size:26px;line-height:34px;font-weight:600;font-variant-numeric:tabular-nums;margin:3px 0 10px}.dbc_row{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}.dbc_foot{color:var(--dsw-alias-label-tertiary,#999);font-size:11px;margin-top:12px}.dbc_refresh{border:0;border-radius:6px;padding:3px 7px;background:var(--dsw-alias-interactive-bg-hover,#444);color:inherit;cursor:pointer;font:inherit}.dbc_refresh:disabled{opacity:.5;cursor:wait}.dbc_tip{font-size:12px;white-space:pre-line}.dbc_status{color:var(--dsw-alias-label-secondary,#bbb)}.dbc_cfg{border-top:1px solid var(--dsw-alias-border-l3,#454545);margin-top:12px;padding-top:10px;display:grid;gap:8px}.dbc_input{width:96px;box-sizing:border-box;border:1px solid var(--dsw-alias-border-l3,#454545);border-radius:6px;background:transparent;color:inherit;font:inherit;padding:3px 6px}.dbc_input:focus-visible{outline:2px solid var(--dsw-focus-ring-color,#60a5fa);outline-offset:1px}.dbc_cfgbtns{display:flex;gap:8px;align-items:center;justify-content:flex-end}.dbc_btn{border:0;border-radius:6px;padding:3px 8px;background:var(--dsw-alias-interactive-bg-hover,#444);color:inherit;cursor:pointer;font:inherit}'
+  const CSS = '.dbc_root{position:relative;display:flex;align-items:center}.dbc_trigger{appearance:none;display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--dsw-alias-label-tertiary);cursor:pointer}.dbc_trigger:hover{background:var(--dsw-alias-interactive-bg-hover)}.dbc_trigger:focus-visible,.dbc_refresh:focus-visible{outline:2px solid var(--dsw-focus-ring-color,#60a5fa);outline-offset:2px}.dbc_ring{width:20px;height:20px;overflow:visible}.dbc_track{stroke:var(--dsw-alias-border-l3,#555)}.dbc_fill{transition:stroke-dashoffset .25s,stroke .25s;transform:rotate(-90deg);transform-origin:center}.dbc_panel{position:absolute;bottom:calc(100% + 9px);right:0;z-index:1000;width:min(280px,calc(100vw - 32px));box-sizing:border-box;padding:16px;border:1px solid var(--dsw-alias-border-l3,#454545);border-radius:14px;background:var(--dsw-alias-bg-layer-2,var(--dsw-alias-bg-base,#303033));color:var(--dsw-alias-label-primary,#eee);box-shadow:0 8px 32px #0004;font-family:var(--dsw-font-family);font-size:12px;line-height:20px}.dbc_heading{display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:600}.dbc_provider{color:var(--dsw-alias-label-secondary,#bbb);overflow-wrap:anywhere;margin:4px 0 12px}.dbc_amount{font-size:26px;line-height:34px;font-weight:600;font-variant-numeric:tabular-nums;margin:3px 0 10px}.dbc_row{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}.dbc_foot{color:var(--dsw-alias-label-tertiary,#999);font-size:11px;margin-top:12px}.dbc_refresh{border:0;border-radius:6px;padding:3px 7px;background:var(--dsw-alias-interactive-bg-hover,#444);color:inherit;cursor:pointer;font:inherit}.dbc_refresh:disabled{opacity:.5;cursor:wait}.dbc_tip{font-size:12px;white-space:pre-line}.dbc_status{color:var(--dsw-alias-label-secondary,#bbb)}.dbc_cfg{border-top:1px solid var(--dsw-alias-border-l3,#454545);margin-top:12px;padding-top:10px;display:grid;gap:8px}.dbc_input{width:96px;box-sizing:border-box;border:1px solid var(--dsw-alias-border-l3,#454545);border-radius:6px;background:transparent;color:inherit;font:inherit;padding:3px 6px}.dbc_input:focus-visible{outline:2px solid var(--dsw-focus-ring-color,#60a5fa);outline-offset:1px}.dbc_cfgbtns{display:flex;gap:8px;align-items:center;justify-content:flex-end}.dbc_btn{border:0;border-radius:6px;padding:3px 8px;background:var(--dsw-alias-interactive-bg-hover,#444);color:inherit;cursor:pointer;font:inherit}.dbc_actions{display:flex;align-items:center;gap:6px}.dbc_gear{appearance:none;display:grid;place-items:center;width:22px;height:22px;padding:0;border:0;border-radius:6px;background:transparent;color:var(--dsw-alias-label-secondary,#bbb);cursor:pointer}.dbc_gear:hover{background:var(--dsw-alias-interactive-bg-hover,#444)}.dbc_gear:focus-visible{outline:2px solid var(--dsw-focus-ring-color,#60a5fa);outline-offset:2px}.dbc_gear[aria-expanded="true"]{background:var(--dsw-alias-interactive-bg-hover,#444);color:var(--dsw-alias-label-primary,#eee)}'
   function styles() {
     if (typeof document === 'undefined') return () => {}
     const previous = document.querySelector('style[data-plugin-css="' + NS + '"]')
@@ -178,6 +178,7 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
       document.addEventListener('keydown', escape)
       return () => { document.removeEventListener('pointerdown', outside); document.removeEventListener('keydown', escape) }
     }, [open])
+    const [showConfig, setShowConfig] = react.useState(false)
     const [config, setConfig] = react.useState(null)
     react.useEffect(() => {
       let alive = true
@@ -187,10 +188,10 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
     const cnyInput = react.useRef(null)
     const usdInput = react.useRef(null)
     react.useEffect(() => {
-      if (!config) return
-      if (cnyInput.current && document.activeElement !== cnyInput.current) cnyInput.current.value = String(config.referenceCny)
-      if (usdInput.current && document.activeElement !== usdInput.current) usdInput.current.value = String(config.referenceUsd)
-    }, [config])
+      if (!showConfig || !config) return
+      if (cnyInput.current) cnyInput.current.value = String(config.referenceCny)
+      if (usdInput.current) usdInput.current.value = String(config.referenceUsd)
+    }, [showConfig, config])
     const primary = snapshot.wallets[0]
     // Usage rings, outer to inner: rolling (shortest), weekly, monthly (longest).
     const usageMode = snapshot.kind === 'usage-percent'
@@ -228,6 +229,12 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
       if (usdInput.current) usdInput.current.value = String(REFERENCE_DEFAULTS.referenceUsd)
       saveReference()
     }
+    const toggleConfig = () => {
+      if (!showConfig && !config) {
+        fetch(CONFIG_PATH).then(response => response.json()).then(body => { if (body?.ok) setConfig(body.config) }).catch(() => {})
+      }
+      setShowConfig(previous => !previous)
+    }
     const trigger = h('button', {
       type: 'button', className: 'dbc_trigger', 'aria-label': label, 'aria-haspopup': 'dialog', 'aria-expanded': open,
       onClick: () => { setOpen(previous => !previous); if (!open) void store.reread() },
@@ -256,13 +263,19 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
     return jsxs('div', { className: 'dbc_root', ref: rootRef, children: [
       h(Tooltip, { label: h('div', { className: 'dbc_tip', children: label }), side: 'top', align: 'end', portal: true, disabled: open, delayMs: 200, children: trigger }),
       open && createPortal(jsxs('div', { className: 'dbc_panel', style: position ?? { visibility: 'hidden', position: 'fixed' }, ref: panelRef, role: 'dialog', 'aria-label': title, children: [
-        jsxs('div', { className: 'dbc_heading', children: [h('span', { children: title }), h('button', { className: 'dbc_refresh', type: 'button', disabled: snapshot.refreshing, onClick: () => { void store.reread() }, children: snapshot.refreshing ? '查询中…' : '刷新' })] }),
+        jsxs('div', { className: 'dbc_heading', children: [
+          h('span', { children: title }),
+          jsxs('div', { className: 'dbc_actions', children: [
+            h('button', { className: 'dbc_gear', type: 'button', 'aria-expanded': showConfig, 'aria-label': '参考金额配置', title: '参考金额配置', onClick: toggleConfig, children: h(IconSettingsOutline14, { size: 14 }) }),
+            h('button', { className: 'dbc_refresh', type: 'button', disabled: snapshot.refreshing, onClick: () => { void store.reread() }, children: snapshot.refreshing ? '查询中…' : '刷新' }),
+          ] }),
+        ] }),
         h('div', { className: 'dbc_provider', children: (snapshot.provider ?? '正在读取当前模型') + (snapshot.model ? ' / ' + snapshot.model : '') }),
         ...rows,
         !primary && h('div', { className: 'dbc_status', children: statusText(snapshot.state) }),
         snapshot.stale && h('div', { className: 'dbc_status', children: statusText(snapshot.failure) + '，显示上次查询值' }),
         h('div', { className: 'dbc_foot', children: (snapshot.at ? '更新于 ' + clockText(snapshot.at) + ' · ' : '') + '随模型切换刷新 · 每 60 秒更新' }),
-        !usageMode && jsxs('div', { className: 'dbc_cfg', children: [
+        !usageMode && showConfig && jsxs('div', { className: 'dbc_cfg', children: [
           jsxs('div', { className: 'dbc_row', children: [h('span', { children: '满格参考（CNY）' }), h('input', { className: 'dbc_input', type: 'number', min: '0', step: 'any', ref: cnyInput, defaultValue: String(REFERENCE_DEFAULTS.referenceCny) })] }),
           jsxs('div', { className: 'dbc_row', children: [h('span', { children: '满格参考（USD）' }), h('input', { className: 'dbc_input', type: 'number', min: '0', step: 'any', ref: usdInput, defaultValue: String(REFERENCE_DEFAULTS.referenceUsd) })] }),
           jsxs('div', { className: 'dbc_cfgbtns', children: [
