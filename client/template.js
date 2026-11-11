@@ -45,6 +45,10 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
     const ratio = Math.max(0, value / reference)
     return RINGS.map((_, index) => Math.max(0, Math.min(1, ratio - index)))
   }
+  // Inner rings only appear once they hold something; an empty one stays hidden.
+  function ringVisible(index, fill) {
+    return index === 0 || (fill !== null && fill > 0)
+  }
   function money(row) { return ({ CNY: '¥ ', USD: '$ ', CREDIT: '' }[row.currency] ?? row.currency + ' ') + formatAmount(row.total) + (row.currency === 'CREDIT' ? ' 额度单位' : '') }
   function decorate(wallets) { return (Array.isArray(wallets) ? wallets : []).map(row => ({ currency: row.currency, total: String(row.balance) })).filter(row => row.total.trim() !== '' && Number.isFinite(Number(row.total))) }
   function clockText(at) { return new Date(at).toLocaleTimeString() }
@@ -179,6 +183,7 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
       children: jsxs('svg', { className: 'dbc_ring', viewBox: '0 0 20 20', 'aria-hidden': true, children: RINGS.flatMap((radius, index) => {
         const circumference = 2 * Math.PI * radius
         const fill = fractions === null ? null : fractions[index]
+        if (!ringVisible(index, fill)) return []
         return [
           h('circle', { key: 'track-' + index, className: 'dbc_track', cx: 10, cy: 10, r: radius, fill: 'none', strokeWidth: 1.6 }),
           h('circle', { key: 'fill-' + index, className: 'dbc_fill', cx: 10, cy: 10, r: radius, fill: 'none', strokeWidth: 1.6, stroke: color, strokeOpacity: RING_OPACITY[index], strokeLinecap: 'round', strokeDasharray: fill === null ? '1 4' : circumference, strokeDashoffset: fill === null ? 0 : circumference * (1 - fill) }),
