@@ -103,6 +103,7 @@ npm run screenshots
 ```
 
 - check validates JavaScript syntax, generated client consistency and common private-data patterns. Automated scanning does not replace manual review.
+- `npm run screenshots` regenerates the images under `preview/` with headless Chrome/Edge (requires `npm install` for the react/react-dom dev dependencies; set `CHROME_PATH` to choose a browser). The viewport is cropped to the content: 312×440 for the money screenshots and 312×330 for the usage one.
 - npm test runs 11 portable unit tests for adapters, errors, currencies, selection changes and request races.
 - Ten additional framework integration tests require your own installed Harness app.asar. Set DSH_DESKTOP_ASAR to its actual absolute path locally, then run:
 
