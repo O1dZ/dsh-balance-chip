@@ -84,7 +84,7 @@ pnpm --dir "$env:USERPROFILE\.dsh\profiles\desktop" remove --ignore-scripts dsh-
 
 ## 开发与验证
 
-开发脚本只使用 Node.js 内置模块，不需要安装开发依赖；peer dependencies 由 Harness 提供。在仓库目录分别执行：
+构建与测试脚本只使用 Node.js 内置模块；`npm run screenshots` 另需 react/react-dom 开发依赖（`npm install`）。peer dependencies 由 Harness 提供。在仓库目录分别执行：
 
 ```powershell
 npm run check
@@ -99,7 +99,7 @@ npm run build
 ```
 
 - check 检查 JavaScript 语法、客户端生成文件一致性和常见私密信息；自动扫描不能替代人工检查。
-- `npm run screenshots` 用无头 Chrome/Edge 重新生成 `preview/` 下的预览图（需要先 `npm install` 装 react/react-dom 开发依赖，可用 `CHROME_PATH` 指定浏览器）。
+- `npm run screenshots` 用无头 Chrome/Edge 重新生成 `preview/` 下的预览图（需要先 `npm install` 装 react/react-dom 开发依赖，可用 `CHROME_PATH` 指定浏览器）；视口按内容收紧（金额 312×440、用量 312×330），不保留大块留白。
 - npm test 执行 11 项可移植单元测试，覆盖适配器、错误分类、币种、模型切换与请求竞态。
 - 框架集成测试另有 10 项，需要你自己安装的 Harness app.asar；不会上传或分发该归档。设置 DSH_DESKTOP_ASAR 为本机实际文件的绝对路径后运行：
 

@@ -35,9 +35,9 @@ function umd(name) {
 }
 
 const variants = [
-  { file: 'dsh-balance-chip-preview.png', query: 'panel=1&config=1&mode=amount&theme=dark' },
-  { file: 'dsh-balance-chip-light.png', query: 'panel=1&config=1&mode=amount&theme=light' },
-  { file: 'dsh-balance-chip-usage.png', query: 'panel=1&mode=usage&theme=dark' },
+  { file: 'dsh-balance-chip-preview.png', width: 312, height: 440, query: 'panel=1&config=1&mode=amount&theme=dark' },
+  { file: 'dsh-balance-chip-light.png', width: 312, height: 440, query: 'panel=1&config=1&mode=amount&theme=light' },
+  { file: 'dsh-balance-chip-usage.png', width: 312, height: 330, query: 'panel=1&mode=usage&theme=dark' },
 ]
 
 const browser = findBrowser()
@@ -94,15 +94,14 @@ body {
   margin: 0;
   background: var(--shot-bg);
   font-family: var(--dsw-font-family);
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding: 24px;
+  padding: 16px;
   box-sizing: border-box;
   overflow: hidden;
 }
 #root { position: relative; }
 ${css[1]}
+/* Static flow keeps the panel inside the tight viewport the shot is cropped to. */
+.dbc_panel{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;margin-top:10px !important;visibility:visible !important;max-height:none !important;overflow:visible !important}
 </style>
 </head>
 <body data-theme="dark">
@@ -172,7 +171,7 @@ for (const variant of variants) {
     '--allow-file-access-from-files',
     '--hide-scrollbars',
     '--force-device-scale-factor=2',
-    '--window-size=700,600',
+    '--window-size=' + variant.width + ',' + variant.height,
     '--virtual-time-budget=8000',
     '--screenshot=' + out,
     url,

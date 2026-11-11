@@ -85,7 +85,7 @@ pnpm --dir "$env:USERPROFILE\.dsh\profiles\desktop" remove --ignore-scripts dsh-
 
 ## Development and tests
 
-Development scripts use only Node.js built-in modules; no development dependencies need to be installed. Harness supplies the peer dependencies. Run each command separately from the repository directory:
+Build and test scripts use only Node.js built-in modules. `npm run screenshots` additionally needs the react/react-dom dev dependencies (`npm install`). Harness supplies the peer dependencies. Run each command separately from the repository directory:
 
 ```powershell
 npm run check
@@ -97,6 +97,10 @@ npm test
 
 ```powershell
 npm run build
+```
+
+```powershell
+npm run screenshots
 ```
 
 - check validates JavaScript syntax, generated client consistency and common private-data patterns. Automated scanning does not replace manual review.
