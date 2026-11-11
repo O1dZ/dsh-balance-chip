@@ -4,7 +4,7 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
   const { Tooltip } = require('@deepseek-ai/dsh-client-ui-primitives')
   const { createPortal } = require('react-dom')
   const NS = 'dsh-balance-chip'
-  const CSS = '.dbc_root{position:relative;display:flex;align-items:center}.dbc_trigger{appearance:none;display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--dsw-alias-label-tertiary);cursor:pointer}.dbc_trigger:hover{background:var(--dsw-alias-interactive-bg-hover)}.dbc_trigger:focus-visible,.dbc_refresh:focus-visible{outline:2px solid var(--dsw-focus-ring-color,#60a5fa);outline-offset:2px}.dbc_ring{width:20px;height:20px;overflow:visible}.dbc_track{stroke:var(--dsw-alias-border-l3,#555)}.dbc_fill{transition:stroke-dashoffset .25s,stroke .25s;transform:rotate(-90deg);transform-origin:center}.dbc_panel{position:absolute;bottom:calc(100% + 9px);right:0;z-index:1000;width:min(280px,calc(100vw - 32px));box-sizing:border-box;padding:16px;border:1px solid var(--dsw-alias-border-l3,#454545);border-radius:14px;background:var(--dsw-alias-bg-layer-2,var(--dsw-alias-bg-base,#303033));color:var(--dsw-alias-label-primary,#eee);box-shadow:0 8px 32px #0004;font-family:var(--dsw-font-family);font-size:12px;line-height:20px}.dbc_heading{display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:600}.dbc_provider{color:var(--dsw-alias-label-secondary,#bbb);overflow-wrap:anywhere;margin:4px 0 12px}.dbc_amount{font-size:26px;line-height:34px;font-weight:600;font-variant-numeric:tabular-nums;margin:3px 0 10px}.dbc_row{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}.dbc_foot{color:var(--dsw-alias-label-tertiary,#999);font-size:11px;margin-top:12px}.dbc_refresh{border:0;border-radius:6px;padding:3px 7px;background:var(--dsw-alias-interactive-bg-hover,#444);color:inherit;cursor:pointer;font:inherit}.dbc_refresh:disabled{opacity:.5;cursor:wait}.dbc_tip{font-size:12px;white-space:pre-line}.dbc_status{color:var(--dsw-alias-label-secondary,#bbb)}'
+  const CSS = '.dbc_root{position:relative;display:flex;align-items:center}.dbc_trigger{appearance:none;display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--dsw-alias-label-tertiary);cursor:pointer}.dbc_trigger:hover{background:var(--dsw-alias-interactive-bg-hover)}.dbc_trigger:focus-visible,.dbc_refresh:focus-visible{outline:2px solid var(--dsw-focus-ring-color,#60a5fa);outline-offset:2px}.dbc_ring{width:20px;height:20px;overflow:visible}.dbc_track{stroke:var(--dsw-alias-border-l3,#555)}.dbc_fill{transition:stroke-dashoffset .25s,stroke .25s;transform:rotate(-90deg);transform-origin:center}.dbc_panel{position:absolute;bottom:calc(100% + 9px);right:0;z-index:1000;width:min(280px,calc(100vw - 32px));box-sizing:border-box;padding:16px;border:1px solid var(--dsw-alias-border-l3,#454545);border-radius:14px;background:var(--dsw-alias-bg-layer-2,var(--dsw-alias-bg-base,#303033));color:var(--dsw-alias-label-primary,#eee);box-shadow:0 8px 32px #0004;font-family:var(--dsw-font-family);font-size:12px;line-height:20px}.dbc_heading{display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:600}.dbc_provider{color:var(--dsw-alias-label-secondary,#bbb);overflow-wrap:anywhere;margin:4px 0 12px}.dbc_amount{font-size:26px;line-height:34px;font-weight:600;font-variant-numeric:tabular-nums;margin:3px 0 10px}.dbc_row{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}.dbc_foot{color:var(--dsw-alias-label-tertiary,#999);font-size:11px;margin-top:12px}.dbc_refresh{border:0;border-radius:6px;padding:3px 7px;background:var(--dsw-alias-interactive-bg-hover,#444);color:inherit;cursor:pointer;font:inherit}.dbc_refresh:disabled{opacity:.5;cursor:wait}.dbc_tip{font-size:12px;white-space:pre-line}.dbc_status{color:var(--dsw-alias-label-secondary,#bbb)}.dbc_cfg{border-top:1px solid var(--dsw-alias-border-l3,#454545);margin-top:12px;padding-top:10px;display:grid;gap:8px}.dbc_input{width:96px;box-sizing:border-box;border:1px solid var(--dsw-alias-border-l3,#454545);border-radius:6px;background:transparent;color:inherit;font:inherit;padding:3px 6px}.dbc_input:focus-visible{outline:2px solid var(--dsw-focus-ring-color,#60a5fa);outline-offset:1px}.dbc_cfgbtns{display:flex;gap:8px;align-items:center;justify-content:flex-end}.dbc_btn{border:0;border-radius:6px;padding:3px 8px;background:var(--dsw-alias-interactive-bg-hover,#444);color:inherit;cursor:pointer;font:inherit}'
   function styles() {
     if (typeof document === 'undefined') return () => {}
     const previous = document.querySelector('style[data-plugin-css="' + NS + '"]')
@@ -23,19 +23,15 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
     const truncated = decimal ? Number(decimal[1] + decimal[2] + '.' + (decimal[3] ?? '').slice(0, 2)) : Math.trunc(value * 100) / 100
     return truncated.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
   }
-  // Display scale is configurable at runtime. Override per currency in the browser:
-  //   localStorage.setItem('dsh-balance-chip.reference-cny', '100')
-  //   localStorage.setItem('dsh-balance-chip.reference-usd', '20')
-  // Missing, non-numeric, or non-positive values fall back to the defaults below.
-  function configuredReference(currency) {
-    const fallback = currency === 'CNY' ? 50 : currency === 'USD' ? 10 : null
-    if (fallback === null || typeof window === 'undefined') return fallback
-    try {
-      const raw = window.localStorage.getItem('dsh-balance-chip.reference-' + currency.toLowerCase())
-      if (raw === null || String(raw).trim() === '') return fallback
-      const value = Number(raw)
-      return Number.isFinite(value) && value > 0 ? value : fallback
-    } catch { return fallback }
+  // Reference amounts live on the host; the panel edits them.
+  const CONFIG_PATH = '/__dsh-balance-chip/config'
+  const REFERENCE_KEYS = { CNY: 'referenceCny', USD: 'referenceUsd' }
+  const REFERENCE_DEFAULTS = { referenceCny: 50, referenceUsd: 10 }
+  function referenceOf(config, currency) {
+    const key = REFERENCE_KEYS[currency]
+    if (!key) return null
+    const value = Number(config?.[key])
+    return Number.isFinite(value) && value > 0 ? value : REFERENCE_DEFAULTS[key]
   }
   // Three concentric rings, each covering 100% of the reference (300% in total).
   const RINGS = [8.4, 5.6, 2.8]
@@ -412,13 +408,26 @@ function contribution() {
       document.addEventListener('keydown', escape)
       return () => { document.removeEventListener('pointerdown', outside); document.removeEventListener('keydown', escape) }
     }, [open])
+    const [config, setConfig] = react.useState(null)
+    react.useEffect(() => {
+      let alive = true
+      fetch(CONFIG_PATH).then(response => response.json()).then(body => { if (alive && body?.ok) setConfig(body.config) }).catch(() => {})
+      return () => { alive = false }
+    }, [])
+    const cnyInput = react.useRef(null)
+    const usdInput = react.useRef(null)
+    react.useEffect(() => {
+      if (!config) return
+      if (cnyInput.current && document.activeElement !== cnyInput.current) cnyInput.current.value = String(config.referenceCny)
+      if (usdInput.current && document.activeElement !== usdInput.current) usdInput.current.value = String(config.referenceUsd)
+    }, [config])
     const primary = snapshot.wallets[0]
     // Usage rings, outer to inner: rolling (shortest), weekly, monthly (longest).
     const usageMode = snapshot.kind === 'usage-percent'
     const usageWallets = usageMode ? snapshot.wallets.slice(0, RINGS.length) : []
     const amount = primary ? money(primary) : statusText(snapshot.state)
     // Monetary reference is a display scale, not a claim about the account's maximum.
-    const reference = primary && !usageMode ? configuredReference(primary.currency) : null
+    const reference = primary && !usageMode ? referenceOf(config, primary.currency) : null
     const value = primary ? Number(primary.total) : null
     const fractions = usageMode
       ? usageFractions(usageWallets)
@@ -430,6 +439,25 @@ function contribution() {
     const label = usageMode
       ? (snapshot.provider ?? '当前供应商') + ' · ' + title + ' · ' + usageWallets.map(row => (row.label ?? '') + ' ' + Math.round(Number(row.total)) + '%').join(' · ') + (snapshot.stale ? '（上次查询值）' : '')
       : (snapshot.provider ?? '当前供应商') + ' · ' + title + ' · ' + amount + (percent === null ? '' : ' · ' + percent + '%') + (snapshot.stale ? '（上次查询值）' : '')
+    const [saveState, setSaveState] = react.useState(null)
+    const readAmount = (input, key) => {
+      const raw = input?.value?.trim() ?? ''
+      const value = Number(raw)
+      return raw !== '' && Number.isFinite(value) && value > 0 ? value : REFERENCE_DEFAULTS[key]
+    }
+    const saveReference = () => {
+      const next = { referenceCny: readAmount(cnyInput.current, 'referenceCny'), referenceUsd: readAmount(usdInput.current, 'referenceUsd') }
+      setSaveState('saving')
+      fetch(CONFIG_PATH, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(next) })
+        .then(response => response.json())
+        .then(body => { if (body?.ok) { setConfig(body.config); setSaveState('saved') } else setSaveState('failed') })
+        .catch(() => setSaveState('failed'))
+    }
+    const resetReference = () => {
+      if (cnyInput.current) cnyInput.current.value = String(REFERENCE_DEFAULTS.referenceCny)
+      if (usdInput.current) usdInput.current.value = String(REFERENCE_DEFAULTS.referenceUsd)
+      saveReference()
+    }
     const trigger = h('button', {
       type: 'button', className: 'dbc_trigger', 'aria-label': label, 'aria-haspopup': 'dialog', 'aria-expanded': open,
       onClick: () => { setOpen(previous => !previous); if (!open) void store.reread() },
@@ -464,6 +492,15 @@ function contribution() {
         !primary && h('div', { className: 'dbc_status', children: statusText(snapshot.state) }),
         snapshot.stale && h('div', { className: 'dbc_status', children: statusText(snapshot.failure) + '，显示上次查询值' }),
         h('div', { className: 'dbc_foot', children: (snapshot.at ? '更新于 ' + clockText(snapshot.at) + ' · ' : '') + '随模型切换刷新 · 每 60 秒更新' }),
+        !usageMode && jsxs('div', { className: 'dbc_cfg', children: [
+          jsxs('div', { className: 'dbc_row', children: [h('span', { children: '满格参考（CNY）' }), h('input', { className: 'dbc_input', type: 'number', min: '0', step: 'any', ref: cnyInput, defaultValue: String(REFERENCE_DEFAULTS.referenceCny) })] }),
+          jsxs('div', { className: 'dbc_row', children: [h('span', { children: '满格参考（USD）' }), h('input', { className: 'dbc_input', type: 'number', min: '0', step: 'any', ref: usdInput, defaultValue: String(REFERENCE_DEFAULTS.referenceUsd) })] }),
+          jsxs('div', { className: 'dbc_cfgbtns', children: [
+            h('span', { className: 'dbc_status', children: saveState === 'saving' ? '保存中…' : saveState === 'saved' ? '已保存' : saveState === 'failed' ? '保存失败' : '' }),
+            h('button', { className: 'dbc_btn', type: 'button', onClick: resetReference, children: '恢复默认' }),
+            h('button', { className: 'dbc_btn', type: 'button', onClick: saveReference, children: '保存' }),
+          ] }),
+        ] }),
         usageMode && h('div', { className: 'dbc_foot', children: '来源：opencode Go 用量接口 · 圆环为剩余百分比（外圈滚动 / 中圈周 / 内圈月），不代表金额' }),
         !usageMode && reference !== null && h('div', { className: 'dbc_foot', children: '圆环显示参考：' + (primary.currency === 'CNY' ? '¥ ' : '$ ') + String(Number(reference.toFixed(2))) + ' / 圈 × ' + RINGS.length + ' 圈（最多 ' + (primary.currency === 'CNY' ? '¥ ' : '$ ') + String(Number((reference * RINGS.length).toFixed(2))) + '），不代表账户额度上限' }),
       ] }), document.body),
