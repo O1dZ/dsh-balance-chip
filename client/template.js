@@ -23,6 +23,20 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
     const truncated = decimal ? Number(decimal[1] + decimal[2] + '.' + (decimal[3] ?? '').slice(0, 2)) : Math.trunc(value * 100) / 100
     return truncated.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
   }
+  // Display scale is configurable at runtime. Override per currency in the browser:
+  //   localStorage.setItem('dsh-balance-chip.reference-cny', '100')
+  //   localStorage.setItem('dsh-balance-chip.reference-usd', '20')
+  // Missing, non-numeric, or non-positive values fall back to the defaults below.
+  function configuredReference(currency) {
+    const fallback = currency === 'CNY' ? 50 : currency === 'USD' ? 10 : null
+    if (fallback === null || typeof window === 'undefined') return fallback
+    try {
+      const raw = window.localStorage.getItem('dsh-balance-chip.reference-' + currency.toLowerCase())
+      if (raw === null || String(raw).trim() === '') return fallback
+      const value = Number(raw)
+      return Number.isFinite(value) && value > 0 ? value : fallback
+    } catch { return fallback }
+  }
   function money(row) { return ({ CNY: '¥ ', USD: '$ ', CREDIT: '' }[row.currency] ?? row.currency + ' ') + formatAmount(row.total) + (row.currency === 'CREDIT' ? ' 额度单位' : '') }
   function decorate(wallets) { return (Array.isArray(wallets) ? wallets : []).map(row => ({ currency: row.currency, total: String(row.balance) })).filter(row => row.total.trim() !== '' && Number.isFinite(Number(row.total))) }
   function clockText(at) { return new Date(at).toLocaleTimeString() }
@@ -144,7 +158,7 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
     const primary = snapshot.wallets[0]
     const amount = primary ? money(primary) : statusText(snapshot.state)
     // Monetary reference is a display scale, not a claim about the account's maximum.
-    const reference = primary?.currency === 'CNY' ? 50 : primary?.currency === 'USD' ? 10 : null
+    const reference = primary ? configuredReference(primary.currency) : null
     const value = primary ? Number(primary.total) : null
     const ratio = reference === null || value === null ? null : Math.max(0, Math.min(1, value / reference))
     const color = snapshot.stale || !primary || reference === null ? 'var(--dsw-alias-label-tertiary,#999)' : value <= 0 ? '#ef6464' : reference && value < reference / 10 ? '#f2b84b' : '#67c58a'
@@ -173,7 +187,7 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
         !primary && h('div', { className: 'dbc_status', children: statusText(snapshot.state) }),
         snapshot.stale && h('div', { className: 'dbc_status', children: statusText(snapshot.failure) + '，显示上次查询值' }),
         h('div', { className: 'dbc_foot', children: (snapshot.at ? '更新于 ' + clockText(snapshot.at) + ' · ' : '') + '随模型切换刷新 · 每 60 秒更新' }),
-        reference !== null && h('div', { className: 'dbc_foot', children: '圆环显示参考：' + (primary.currency === 'CNY' ? '¥ 50' : '$ 10') + '，不代表账户额度上限' }),
+        reference !== null && h('div', { className: 'dbc_foot', children: '圆环显示参考：' + (primary.currency === 'CNY' ? '¥ ' : '$ ') + String(Number(reference.toFixed(2))) + '，不代表账户额度上限' }),
       ] }), document.body),
     ] })
   }
