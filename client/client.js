@@ -49,6 +49,21 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
   function ringVisible(index, fill) {
     return index === 0 || (fill !== null && fill > 0)
   }
+  function usageFractions(wallets) {
+    return wallets.map(row => Math.max(0, Math.min(1, Number(row.total) / 100)))
+  }
+  // Usage rings colour by remaining percentage, mirroring the balance thresholds.
+  function usageHealth(remaining) {
+    return remaining <= 0 ? '#ef6464' : remaining < 10 ? '#f2b84b' : '#67c58a'
+  }
+  function resetText(iso) {
+    const date = new Date(iso)
+    if (Number.isNaN(date.getTime())) return ''
+    const sameDay = date.toDateString() === new Date().toDateString()
+    return sameDay
+      ? date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+      : date.toLocaleString(undefined, { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
+  }
   function money(row) { return ({ CNY: '¥ ', USD: '$ ', CREDIT: '' }[row.currency] ?? row.currency + ' ') + formatAmount(row.total) + (row.currency === 'CREDIT' ? ' 额度单位' : '') }
   function decorate(wallets) { return (Array.isArray(wallets) ? wallets : []).map(row => ({ currency: row.currency, total: String(row.balance) })).filter(row => row.total.trim() !== '' && Number.isFinite(Number(row.total))) }
   function clockText(at) { return new Date(at).toLocaleTimeString() }
@@ -261,12 +276,16 @@ function parseView(value) {
       if (typeof row[key] !== 'string' || row[key].trim() === '' || !Number.isFinite(Number(row[key]))) throw new TypeError('Invalid wallet breakdown')
       result[key] = row[key]
     }
+    for (const key of ['label', 'resetAt']) if (row[key] !== undefined) {
+      if (typeof row[key] !== 'string' || row[key].trim() === '') throw new TypeError('Invalid wallet label')
+      result[key] = row[key]
+    }
     return result
   })
   if (value.state === 'ready' && wallets.length === 0) throw new TypeError('Empty balance')
   const result = { state: value.state, wallets, at: value.at }
   if (value.kind !== undefined) {
-    if (!['balance', 'key-limit', 'quota-units'].includes(value.kind)) throw new TypeError('Invalid balance kind')
+    if (!['balance', 'key-limit', 'quota-units', 'usage-percent'].includes(value.kind)) throw new TypeError('Invalid balance kind')
     result.kind = value.kind
   }
   return result
@@ -394,32 +413,47 @@ function contribution() {
       return () => { document.removeEventListener('pointerdown', outside); document.removeEventListener('keydown', escape) }
     }, [open])
     const primary = snapshot.wallets[0]
+    // Usage rings, outer to inner: rolling (shortest), weekly, monthly (longest).
+    const usageMode = snapshot.kind === 'usage-percent'
+    const usageWallets = usageMode ? snapshot.wallets.slice(0, RINGS.length) : []
     const amount = primary ? money(primary) : statusText(snapshot.state)
     // Monetary reference is a display scale, not a claim about the account's maximum.
-    const reference = primary ? configuredReference(primary.currency) : null
+    const reference = primary && !usageMode ? configuredReference(primary.currency) : null
     const value = primary ? Number(primary.total) : null
-    const fractions = reference === null || value === null ? null : ringFractions(value, reference)
-    const percent = fractions === null ? null : Math.round(Math.max(0, value / reference) * 100)
+    const fractions = usageMode
+      ? usageFractions(usageWallets)
+      : reference === null || value === null ? null : ringFractions(value, reference)
+    const percent = reference === null || value === null ? null : Math.round(Math.max(0, value / reference) * 100)
     const color = snapshot.stale || !primary || reference === null ? 'var(--dsw-alias-label-tertiary,#999)' : value <= 0 ? '#ef6464' : reference && value < reference / 10 ? '#f2b84b' : '#67c58a'
-    const title = snapshot.kind === 'key-limit' ? 'API Key 剩余额度' : snapshot.kind === 'quota-units' ? '剩余额度' : '账户余额'
-    const label = (snapshot.provider ?? '当前供应商') + ' · ' + title + ' · ' + amount + (percent === null ? '' : ' · ' + percent + '%') + (snapshot.stale ? '（上次查询值）' : '')
+    const usageColor = row => snapshot.stale ? 'var(--dsw-alias-label-tertiary,#999)' : usageHealth(Number(row.total))
+    const title = usageMode ? 'Go 套餐剩余' : snapshot.kind === 'key-limit' ? 'API Key 剩余额度' : snapshot.kind === 'quota-units' ? '剩余额度' : '账户余额'
+    const label = usageMode
+      ? (snapshot.provider ?? '当前供应商') + ' · ' + title + ' · ' + usageWallets.map(row => (row.label ?? '') + ' ' + Math.round(Number(row.total)) + '%').join(' · ') + (snapshot.stale ? '（上次查询值）' : '')
+      : (snapshot.provider ?? '当前供应商') + ' · ' + title + ' · ' + amount + (percent === null ? '' : ' · ' + percent + '%') + (snapshot.stale ? '（上次查询值）' : '')
     const trigger = h('button', {
       type: 'button', className: 'dbc_trigger', 'aria-label': label, 'aria-haspopup': 'dialog', 'aria-expanded': open,
       onClick: () => { setOpen(previous => !previous); if (!open) void store.reread() },
       children: jsxs('svg', { className: 'dbc_ring', viewBox: '0 0 20 20', 'aria-hidden': true, children: RINGS.flatMap((radius, index) => {
         const circumference = 2 * Math.PI * radius
         const fill = fractions === null ? null : fractions[index]
-        if (!ringVisible(index, fill)) return []
+        // Usage mode draws one ring per window; balance mode hides rings that hold nothing.
+        const visible = usageMode ? index < usageWallets.length : ringVisible(index, fill)
+        if (!visible) return []
+        const stroke = usageMode ? usageColor(usageWallets[index]) : color
         return [
           h('circle', { key: 'track-' + index, className: 'dbc_track', cx: 10, cy: 10, r: radius, fill: 'none', strokeWidth: 1.6 }),
-          h('circle', { key: 'fill-' + index, className: 'dbc_fill', cx: 10, cy: 10, r: radius, fill: 'none', strokeWidth: 1.6, stroke: color, strokeOpacity: RING_OPACITY[index], strokeLinecap: 'round', strokeDasharray: fill === null ? '1 4' : circumference, strokeDashoffset: fill === null ? 0 : circumference * (1 - fill) }),
+          h('circle', { key: 'fill-' + index, className: 'dbc_fill', cx: 10, cy: 10, r: radius, fill: 'none', strokeWidth: 1.6, stroke, strokeOpacity: usageMode ? 1 : RING_OPACITY[index], strokeLinecap: 'round', strokeDasharray: fill === null ? '1 4' : circumference, strokeDashoffset: fill === null ? 0 : circumference * (1 - fill) }),
         ]
       }) }),
     })
     const rows = []
-    for (const row of snapshot.wallets) {
-      rows.push(h('div', { className: 'dbc_amount', children: money(row) }, row.currency + '-total'))
-      for (const key of ['paid', 'bonus']) if (row[key] !== undefined) rows.push(jsxs('div', { className: 'dbc_row', children: [h('span', { children: key === 'paid' ? '充值余额' : '赠金余额' }), h('span', { children: money({ ...row, total: row[key] }) })] }, row.currency + '-' + key))
+    if (usageMode) {
+      for (const row of usageWallets) rows.push(jsxs('div', { className: 'dbc_row', children: [h('span', { children: (row.label ?? '窗口') + ' 剩余' }), h('span', { children: Math.round(Number(row.total)) + '%' + (row.resetAt ? ' · 重置 ' + resetText(row.resetAt) : '') })] }, 'usage-' + (row.label ?? row.currency)))
+    } else {
+      for (const row of snapshot.wallets) {
+        rows.push(h('div', { className: 'dbc_amount', children: money(row) }, row.currency + '-total'))
+        for (const key of ['paid', 'bonus']) if (row[key] !== undefined) rows.push(jsxs('div', { className: 'dbc_row', children: [h('span', { children: key === 'paid' ? '充值余额' : '赠金余额' }), h('span', { children: money({ ...row, total: row[key] }) })] }, row.currency + '-' + key))
+      }
     }
     return jsxs('div', { className: 'dbc_root', ref: rootRef, children: [
       h(Tooltip, { label: h('div', { className: 'dbc_tip', children: label }), side: 'top', align: 'end', portal: true, disabled: open, delayMs: 200, children: trigger }),
@@ -430,7 +464,8 @@ function contribution() {
         !primary && h('div', { className: 'dbc_status', children: statusText(snapshot.state) }),
         snapshot.stale && h('div', { className: 'dbc_status', children: statusText(snapshot.failure) + '，显示上次查询值' }),
         h('div', { className: 'dbc_foot', children: (snapshot.at ? '更新于 ' + clockText(snapshot.at) + ' · ' : '') + '随模型切换刷新 · 每 60 秒更新' }),
-        reference !== null && h('div', { className: 'dbc_foot', children: '圆环显示参考：' + (primary.currency === 'CNY' ? '¥ ' : '$ ') + String(Number(reference.toFixed(2))) + ' / 圈 × ' + RINGS.length + ' 圈（最多 ' + (primary.currency === 'CNY' ? '¥ ' : '$ ') + String(Number((reference * RINGS.length).toFixed(2))) + '），不代表账户额度上限' }),
+        usageMode && h('div', { className: 'dbc_foot', children: '来源：opencode Go 用量接口 · 圆环为剩余百分比（外圈滚动 / 中圈周 / 内圈月），不代表金额' }),
+        !usageMode && reference !== null && h('div', { className: 'dbc_foot', children: '圆环显示参考：' + (primary.currency === 'CNY' ? '¥ ' : '$ ') + String(Number(reference.toFixed(2))) + ' / 圈 × ' + RINGS.length + ' 圈（最多 ' + (primary.currency === 'CNY' ? '¥ ' : '$ ') + String(Number((reference * RINGS.length).toFixed(2))) + '），不代表账户额度上限' }),
       ] }), document.body),
     ] })
   }
