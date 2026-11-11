@@ -8,19 +8,15 @@ DeepSeek Harness 输入框工具栏的供应商余额圆环。悬停看余额，
 
 ## 界面预览
 
-实际 Harness 界面，圆环位于模型选择器左侧：
+以下图片由 `npm run screenshots` 用模拟数据自动生成：真实组件在无头浏览器中渲染，不读取账号、不含真实余额。
 
-![Harness 实机界面的余额圆环位置](preview/dsh-balance-chip-harness.jpg)
+| 深色主题 | 浅色主题 |
+| --- | --- |
+| ![深色主题详情（模拟余额）](preview/dsh-balance-chip-preview.png) | ![浅色主题详情（模拟余额）](preview/dsh-balance-chip-light.png) |
 
-深色主题详情（模拟数据）：
+opencode Go 用量模式（模拟数据，三圈=滚动/周/月剩余百分比）：
 
-![深色主题详情（模拟余额）](preview/dsh-balance-chip-preview.png)
-
-浅色主题详情（模拟数据）：
-
-![浅色主题详情（模拟余额）](preview/dsh-balance-chip-light.png)
-
-首张为实际应用截图，已收起侧栏且未展开真实余额；两张详情图使用模拟金额，均不包含测试输出或真实账号数据。
+![opencode Go 用量模式（模拟用量）](preview/dsh-balance-chip-usage.png)
 
 ## 功能
 
@@ -29,6 +25,8 @@ DeepSeek Harness 输入框工具栏的供应商余额圆环。悬停看余额，
 - 圆环、悬浮提示和实色详情面板跟随深浅主题；Esc 或点击外部关闭。
 - 模型切换后清除上一选择；晚到的查询不会覆盖新的供应商。刷新失败保留同一供应商的上次余额并标明过期。
 - 金额、币种与原始额度分开显示；缺少凭证、权限不足、超时、不支持和异常回复不当作零余额。
+- 三圈同心环：金额模式下每圈一个参考金额、最多 300%，内圈无内容时隐藏；`opencode-go` 下三圈为滚动 / 周 / 月剩余百分比（向下取整，失败或刷新时保留上次读数）。
+- 面板标题栏的齿轮按钮可改满格参考金额（CNY / USD），保存在宿主插件数据目录，重启保留。
 
 ## 兼容性与支持范围
 
@@ -41,11 +39,12 @@ DeepSeek Harness 输入框工具栏的供应商余额圆环。悬停看余额，
 | Moonshot 中国 / 国际 | 可用余额、现金、代金券，CNY / USD |
 | SiliconFlow 中国 / 国际 | 总余额、充值、赠金 |
 | OpenRouter | API Key 剩余额度；账户总余额接口需管理密钥 |
+| opencode Go | 套餐用量：滚动 / 周 / 月剩余百分比，无金额 |
 | 自定义兼容网关 | 尝试 DeepSeek 余额格式、One API / New API 用户额度、旧 dashboard billing 格式 |
 
 自动使用所选供应商的已启用配置，不需要再次输入 Key。没有通用余额发现协议；未适配的接口不会自动得到支持。普通 OpenAI、Anthropic、Google 模型密钥及 OAuth 订阅配额未适配。New API / One API 的 quota 保留原始额度单位，不猜测货币换算。
 
-CNY 圆环以 ¥50、USD 以 $10 为显示参考，**不代表账户额度上限**。不统计或伪造今日消费、Token 费用或请求数。
+金额模式默认以 ¥50（CNY）/ $10（USD）为一圈参考金额，最多三圈（300%）；参考值可在面板齿轮中修改，**不代表账户额度上限**。不统计或伪造今日消费、Token 费用或请求数。
 
 ## 安装
 
@@ -84,7 +83,7 @@ pnpm --dir "$env:USERPROFILE\.dsh\profiles\desktop" remove --ignore-scripts dsh-
 
 ## 开发与验证
 
-开发脚本只使用 Node.js 内置模块，不需要安装开发依赖；peer dependencies 由 Harness 提供。在仓库目录分别执行：
+构建与测试脚本只使用 Node.js 内置模块；`npm run screenshots` 另需 react/react-dom 开发依赖（`npm install`）。peer dependencies 由 Harness 提供。在仓库目录分别执行：
 
 ```powershell
 npm run check
@@ -99,6 +98,7 @@ npm run build
 ```
 
 - check 检查 JavaScript 语法、客户端生成文件一致性和常见私密信息；自动扫描不能替代人工检查。
+- `npm run screenshots` 用无头 Chrome/Edge 重新生成 `preview/` 下的预览图（需要先 `npm install` 装 react/react-dom 开发依赖，可用 `CHROME_PATH` 指定浏览器）；视口按内容收紧（金额 312×440、用量 312×330），不保留大块留白。
 - npm test 执行 11 项可移植单元测试，覆盖适配器、错误分类、币种、模型切换与请求竞态。
 - 框架集成测试另有 10 项，需要你自己安装的 Harness app.asar；不会上传或分发该归档。设置 DSH_DESKTOP_ASAR 为本机实际文件的绝对路径后运行：
 

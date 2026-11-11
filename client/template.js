@@ -4,7 +4,7 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
   const { Tooltip } = require('@deepseek-ai/dsh-client-ui-primitives')
   const { createPortal } = require('react-dom')
   const NS = 'dsh-balance-chip'
-  const CSS = '.dbc_root{position:relative;display:flex;align-items:center}.dbc_trigger{appearance:none;display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--dsw-alias-label-tertiary);cursor:pointer}.dbc_trigger:hover{background:var(--dsw-alias-interactive-bg-hover)}.dbc_trigger:focus-visible,.dbc_refresh:focus-visible{outline:2px solid var(--dsw-focus-ring-color,#60a5fa);outline-offset:2px}.dbc_ring{width:18px;height:18px;overflow:visible}.dbc_track{stroke:var(--dsw-alias-border-l3,#555)}.dbc_fill{transition:stroke-dashoffset .25s,stroke .25s;transform:rotate(-90deg);transform-origin:center}.dbc_panel{position:absolute;bottom:calc(100% + 9px);right:0;z-index:1000;width:min(280px,calc(100vw - 32px));box-sizing:border-box;padding:16px;border:1px solid var(--dsw-alias-border-l3,#454545);border-radius:14px;background:var(--dsw-alias-bg-layer-2,var(--dsw-alias-bg-base,#303033));color:var(--dsw-alias-label-primary,#eee);box-shadow:0 8px 32px #0004;font-family:var(--dsw-font-family);font-size:12px;line-height:20px}.dbc_heading{display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:600}.dbc_provider{color:var(--dsw-alias-label-secondary,#bbb);overflow-wrap:anywhere;margin:4px 0 12px}.dbc_amount{font-size:26px;line-height:34px;font-weight:600;font-variant-numeric:tabular-nums;margin:3px 0 10px}.dbc_row{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}.dbc_foot{color:var(--dsw-alias-label-tertiary,#999);font-size:11px;margin-top:12px}.dbc_refresh{border:0;border-radius:6px;padding:3px 7px;background:var(--dsw-alias-interactive-bg-hover,#444);color:inherit;cursor:pointer;font:inherit}.dbc_refresh:disabled{opacity:.5;cursor:wait}.dbc_tip{font-size:12px;white-space:pre-line}.dbc_status{color:var(--dsw-alias-label-secondary,#bbb)}'
+  const CSS = '.dbc_root{position:relative;display:flex;align-items:center}.dbc_trigger{appearance:none;display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--dsw-alias-label-tertiary);cursor:pointer}.dbc_trigger:hover{background:var(--dsw-alias-interactive-bg-hover)}.dbc_trigger:focus-visible,.dbc_refresh:focus-visible{outline:2px solid var(--dsw-focus-ring-color,#60a5fa);outline-offset:2px}.dbc_ring{width:20px;height:20px;overflow:visible}.dbc_track{stroke:var(--dsw-alias-border-l3,#555)}.dbc_fill{transition:stroke-dashoffset .25s,stroke .25s;transform:rotate(-90deg);transform-origin:center}.dbc_panel{position:absolute;bottom:calc(100% + 9px);right:0;z-index:1000;width:min(280px,calc(100vw - 32px));box-sizing:border-box;padding:16px;border:1px solid var(--dsw-alias-border-l3,#454545);border-radius:14px;background:var(--dsw-alias-bg-layer-2,var(--dsw-alias-bg-base,#303033));color:var(--dsw-alias-label-primary,#eee);box-shadow:0 8px 32px #0004;font-family:var(--dsw-font-family);font-size:12px;line-height:20px}.dbc_heading{display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:600}.dbc_provider{color:var(--dsw-alias-label-secondary,#bbb);overflow-wrap:anywhere;margin:4px 0 12px}.dbc_amount{font-size:26px;line-height:34px;font-weight:600;font-variant-numeric:tabular-nums;margin:3px 0 10px}.dbc_row{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}.dbc_foot{color:var(--dsw-alias-label-tertiary,#999);font-size:11px;margin-top:12px}.dbc_refresh{border:0;border-radius:6px;padding:3px 7px;background:var(--dsw-alias-interactive-bg-hover,#444);color:inherit;cursor:pointer;font:inherit}.dbc_refresh:disabled{opacity:.5;cursor:wait}.dbc_tip{font-size:12px;white-space:pre-line}.dbc_status{color:var(--dsw-alias-label-secondary,#bbb)}.dbc_cfg{border-top:1px solid var(--dsw-alias-border-l3,#454545);margin-top:12px;padding-top:10px;display:grid;gap:8px}.dbc_input{width:96px;box-sizing:border-box;border:1px solid var(--dsw-alias-border-l3,#454545);border-radius:6px;background:transparent;color:inherit;font:inherit;padding:3px 6px}.dbc_input:focus-visible{outline:2px solid var(--dsw-focus-ring-color,#60a5fa);outline-offset:1px}.dbc_cfgbtns{display:flex;gap:8px;align-items:center;justify-content:flex-end}.dbc_btn{border:0;border-radius:6px;padding:3px 8px;background:var(--dsw-alias-interactive-bg-hover,#444);color:inherit;cursor:pointer;font:inherit}.dbc_actions{display:flex;align-items:center;gap:6px}.dbc_gear{appearance:none;display:grid;place-items:center;width:22px;height:22px;padding:0;border:0;border-radius:6px;background:transparent;color:var(--dsw-alias-label-secondary,#bbb);cursor:pointer}.dbc_gear:hover{background:var(--dsw-alias-interactive-bg-hover,#444)}.dbc_gear:focus-visible{outline:2px solid var(--dsw-focus-ring-color,#60a5fa);outline-offset:2px}.dbc_gear[aria-expanded="true"]{background:var(--dsw-alias-interactive-bg-hover,#444);color:var(--dsw-alias-label-primary,#eee)}'
   function styles() {
     if (typeof document === 'undefined') return () => {}
     const previous = document.querySelector('style[data-plugin-css="' + NS + '"]')
@@ -22,6 +22,48 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
     const decimal = String(raw).trim().match(/^(-?)(\d+)(?:\.(\d*))?$/)
     const truncated = decimal ? Number(decimal[1] + decimal[2] + '.' + (decimal[3] ?? '').slice(0, 2)) : Math.trunc(value * 100) / 100
     return truncated.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  }
+  // Reference amounts live on the host; the panel edits them.
+  const CONFIG_PATH = '/__dsh-balance-chip/config'
+  const REFERENCE_KEYS = { CNY: 'referenceCny', USD: 'referenceUsd' }
+  const REFERENCE_DEFAULTS = { referenceCny: 50, referenceUsd: 10 }
+  function referenceOf(config, currency) {
+    const key = REFERENCE_KEYS[currency]
+    if (!key) return null
+    const value = Number(config?.[key])
+    return Number.isFinite(value) && value > 0 ? value : REFERENCE_DEFAULTS[key]
+  }
+  // Three concentric rings, each covering 100% of the reference (300% in total).
+  const RINGS = [8.4, 5.6, 2.8]
+  const RING_OPACITY = [1, 0.72, 0.5]
+  function ringFractions(value, reference) {
+    if (!Number.isFinite(value) || !Number.isFinite(reference) || reference <= 0) return null
+    const ratio = Math.max(0, value / reference)
+    return RINGS.map((_, index) => Math.max(0, Math.min(1, ratio - index)))
+  }
+  // Inner rings only appear once they hold something; an empty one stays hidden.
+  function ringVisible(index, fill) {
+    return index === 0 || (fill !== null && fill > 0)
+  }
+  // Usage percentages are floored so the number and the ring agree, and 99.x% never looks like 100%.
+  function usagePercent(row) {
+    const value = Number(row.total)
+    return Number.isFinite(value) ? Math.max(0, Math.min(100, Math.floor(value))) : 0
+  }
+  function usageFractions(wallets) {
+    return wallets.map(row => usagePercent(row) / 100)
+  }
+  // Usage rings colour by remaining percentage, mirroring the balance thresholds.
+  function usageHealth(remaining) {
+    return remaining <= 0 ? '#ef6464' : remaining < 10 ? '#f2b84b' : '#67c58a'
+  }
+  function resetText(iso) {
+    const date = new Date(iso)
+    if (Number.isNaN(date.getTime())) return ''
+    const sameDay = date.toDateString() === new Date().toDateString()
+    return sameDay
+      ? date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+      : date.toLocaleString(undefined, { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
   }
   function money(row) { return ({ CNY: '¥ ', USD: '$ ', CREDIT: '' }[row.currency] ?? row.currency + ' ') + formatAmount(row.total) + (row.currency === 'CREDIT' ? ' 额度单位' : '') }
   function decorate(wallets) { return (Array.isArray(wallets) ? wallets : []).map(row => ({ currency: row.currency, total: String(row.balance) })).filter(row => row.total.trim() !== '' && Number.isFinite(Number(row.total))) }
@@ -111,6 +153,13 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
     }
   }
   const statusText = state => ({ connecting: '正在连接余额服务…', loading: '正在查询余额…', unsupported: '该供应商不支持余额查询', unconfigured: '未找到可用的 API 凭证', permission: '余额接口权限不足', malformed: '余额接口返回格式异常', failed: '余额查询失败', timeout: '余额查询超时', unavailable: '账号服务不可用', 'signed-out': '未登录 DeepSeek 账号' }[state] ?? '余额暂不可用')
+  // Same geometry as the DSH settings icon, inlined so the panel never depends on the icon export.
+  function GearIcon({ size = 14 }) {
+    return jsxs('svg', { width: size, height: size, viewBox: '0 0 14 14', fill: 'none', 'aria-hidden': true, children: [
+      h('path', { d: 'M12.1192 4.91016C11.9392 4.52714 11.7007 4.1292 11.4483 3.78809C11.385 3.70258 11.3517 3.68409 11.2462 3.67383C10.7419 3.6248 10.2318 3.69454 9.72662 3.64551C9.29108 3.60318 8.93739 3.40341 8.67682 3.05176C8.38762 2.66127 8.19217 2.20926 7.90338 1.81934C7.83985 1.73359 7.80848 1.71542 7.70221 1.70508C7.24758 1.6609 6.7511 1.66104 6.29791 1.70508C6.19164 1.71542 6.16027 1.73359 6.09674 1.81934C5.80775 2.20954 5.61248 2.66131 5.3233 3.05176C5.06273 3.40341 4.70904 3.60318 4.2735 3.64551C3.76831 3.69454 3.25825 3.6248 2.75397 3.67383C2.6484 3.68409 2.61509 3.70258 2.55182 3.78809C2.30019 4.12814 2.06125 4.52646 1.88092 4.91016C1.83256 5.01309 1.83242 5.04912 1.88092 5.15235C2.07954 5.57482 2.37449 5.94529 2.5733 6.36817C2.76971 6.78606 2.76964 7.21293 2.5733 7.63086C2.37462 8.05374 2.07947 8.42453 1.88092 8.84668C1.83235 8.95004 1.83257 8.98695 1.88092 9.08985C2.06098 9.47285 2.2994 9.87079 2.55182 10.2119C2.61509 10.2974 2.6484 10.3159 2.75397 10.3262C3.25879 10.3753 3.76834 10.3055 4.2735 10.3545C4.70904 10.3968 5.06273 10.5966 5.3233 10.9482C5.6125 11.3387 5.80795 11.7907 6.09674 12.1807C6.16027 12.2664 6.19164 12.2846 6.29791 12.2949C6.7511 12.339 7.24758 12.3391 7.70221 12.2949C7.80848 12.2846 7.83985 12.2664 7.90338 12.1807C8.19237 11.7905 8.38764 11.3387 8.67682 10.9482C8.93739 10.5966 9.29108 10.3968 9.72662 10.3545C10.2318 10.3055 10.7419 10.3752 11.2462 10.3262C11.3517 10.3159 11.385 10.2974 11.4483 10.2119C11.7007 9.87079 11.9391 9.47285 12.1192 9.08985C12.1675 8.98695 12.1678 8.95004 12.1192 8.84668C11.9205 8.42428 11.6255 8.05377 11.4268 7.63086C11.2305 7.21293 11.2304 6.78606 11.4268 6.36817C11.6256 5.94531 11.9207 5.5746 12.1192 5.15235C12.1677 5.04912 12.1676 5.01309 12.1192 4.91016ZM13.2051 5.66309C13.0064 6.08573 12.7114 6.45579 12.5128 6.87793C12.4642 6.98123 12.4645 7.01829 12.5128 7.1211C12.7112 7.54328 13.0064 7.91405 13.2051 8.33692C13.4015 8.75487 13.4015 9.18169 13.2051 9.59961C12.9911 10.0551 12.7109 10.5221 12.4122 10.9258C12.1522 11.277 11.7974 11.4782 11.3624 11.5205C10.8573 11.5696 10.3477 11.4999 9.84283 11.5488C9.73621 11.5592 9.70429 11.5772 9.64069 11.6631C9.35229 12.0526 9.15705 12.5044 8.86823 12.8945C8.60854 13.2452 8.25275 13.447 7.81842 13.4893C7.28749 13.5409 6.71096 13.5407 6.1817 13.4893C5.74737 13.447 5.39158 13.2452 5.1319 12.8945C4.84312 12.5045 4.64808 12.0529 4.35944 11.6631C4.29583 11.5772 4.26392 11.5592 4.15729 11.5488C3.65283 11.5 3.14295 11.5696 2.63776 11.5205C2.20274 11.4782 1.84796 11.277 1.58795 10.9258C1.28834 10.5209 1.00864 10.0543 0.794982 9.59961C0.598644 9.18169 0.598598 8.75487 0.794982 8.33692C0.993688 7.91405 1.28889 7.54328 1.48737 7.1211C1.53567 7.01829 1.53593 6.98123 1.48737 6.87793C1.28887 6.45603 0.993667 6.08569 0.794982 5.66309C0.598535 5.24516 0.59869 4.81829 0.794982 4.40039C1.00898 3.94492 1.28922 3.47791 1.58795 3.07422C1.84796 2.723 2.20274 2.5218 2.63776 2.47949C3.14295 2.43038 3.65283 2.50003 4.15729 2.45117C4.26391 2.44081 4.29583 2.4228 4.35944 2.33692C4.64783 1.94742 4.84308 1.49557 5.1319 1.10547C5.39158 0.754835 5.74737 0.553005 6.1817 0.510744C6.71263 0.459147 7.28917 0.459309 7.81842 0.510744C8.25275 0.553005 8.60854 0.754835 8.86823 1.10547C9.157 1.49551 9.35204 1.94708 9.64069 2.33692C9.70429 2.4228 9.73621 2.44081 9.84283 2.45117C10.3477 2.50007 10.8573 2.43039 11.3624 2.47949C11.7974 2.5218 12.1522 2.723 12.4122 3.07422C12.7118 3.47909 12.9915 3.94567 13.2051 4.40039C13.4014 4.81829 13.4016 5.24516 13.2051 5.66309Z', fill: 'currentColor' }),
+      h('path', { d: 'M7.9317 7C7.9317 6.48569 7.51438 6.06836 7.00006 6.06836C6.48575 6.06836 6.06842 6.48569 6.06842 7C6.06842 7.51432 6.48575 7.93164 7.00006 7.93164C7.51438 7.93164 7.9317 7.51432 7.9317 7ZM9.13092 7C9.13092 8.17706 8.17712 9.13086 7.00006 9.13086C5.823 9.13086 4.8692 8.17706 4.8692 7C4.8692 5.82294 5.823 4.86914 7.00006 4.86914C8.17712 4.86914 9.13092 5.82294 9.13092 7Z', fill: 'currentColor' }),
+    ] })
+  }
   function BalanceRing({ store }) {
     const snapshot = react.useSyncExternalStore(store.subscribe, store.getSnapshot)
     const [open, setOpen] = react.useState(false)
@@ -141,39 +190,115 @@ window.__ModuleLoader__.load({ id: 'dsh-balance-chip', factory(require) {
       document.addEventListener('keydown', escape)
       return () => { document.removeEventListener('pointerdown', outside); document.removeEventListener('keydown', escape) }
     }, [open])
+    const [showConfig, setShowConfig] = react.useState(false)
+    const [config, setConfig] = react.useState(null)
+    react.useEffect(() => {
+      let alive = true
+      fetch(CONFIG_PATH).then(response => response.json()).then(body => { if (alive && body?.ok) setConfig(body.config) }).catch(() => {})
+      return () => { alive = false }
+    }, [])
+    const cnyInput = react.useRef(null)
+    const usdInput = react.useRef(null)
+    react.useEffect(() => {
+      if (!showConfig || !config) return
+      if (cnyInput.current) cnyInput.current.value = String(config.referenceCny)
+      if (usdInput.current) usdInput.current.value = String(config.referenceUsd)
+    }, [showConfig, config])
     const primary = snapshot.wallets[0]
+    // Usage rings, outer to inner: rolling (shortest), weekly, monthly (longest).
+    const usageMode = snapshot.kind === 'usage-percent'
+    const usageWallets = usageMode ? snapshot.wallets.slice(0, RINGS.length) : []
     const amount = primary ? money(primary) : statusText(snapshot.state)
     // Monetary reference is a display scale, not a claim about the account's maximum.
-    const reference = primary?.currency === 'CNY' ? 50 : primary?.currency === 'USD' ? 10 : null
+    const reference = primary && !usageMode ? referenceOf(config, primary.currency) : null
     const value = primary ? Number(primary.total) : null
-    const ratio = reference === null || value === null ? null : Math.max(0, Math.min(1, value / reference))
+    const fractions = usageMode
+      ? usageFractions(usageWallets)
+      : reference === null || value === null ? null : ringFractions(value, reference)
+    const percent = reference === null || value === null ? null : Math.round(Math.max(0, value / reference) * 100)
     const color = snapshot.stale || !primary || reference === null ? 'var(--dsw-alias-label-tertiary,#999)' : value <= 0 ? '#ef6464' : reference && value < reference / 10 ? '#f2b84b' : '#67c58a'
-    const circumference = 2 * Math.PI * 5.5
-    const title = snapshot.kind === 'key-limit' ? 'API Key 剩余额度' : snapshot.kind === 'quota-units' ? '剩余额度' : '账户余额'
-    const label = (snapshot.provider ?? '当前供应商') + ' · ' + title + ' · ' + amount + (snapshot.stale ? '（上次查询值）' : '')
+    // A stale ring keeps its last good colours; only the labels say the value is old.
+    const usageColor = row => usageHealth(usagePercent(row))
+    const title = usageMode ? 'Go 套餐剩余' : snapshot.kind === 'key-limit' ? 'API Key 剩余额度' : snapshot.kind === 'quota-units' ? '剩余额度' : '账户余额'
+    const label = usageMode
+      ? (snapshot.provider ?? '当前供应商') + ' · ' + title + ' · ' + usageWallets.map(row => (row.label ?? '') + ' ' + usagePercent(row) + '%').join(' · ') + (snapshot.stale ? '（上次查询值）' : '')
+      : (snapshot.provider ?? '当前供应商') + ' · ' + title + ' · ' + amount + (percent === null ? '' : ' · ' + percent + '%') + (snapshot.stale ? '（上次查询值）' : '')
+    const [saveState, setSaveState] = react.useState(null)
+    const readAmount = (input, key) => {
+      const raw = input?.value?.trim() ?? ''
+      const value = Number(raw)
+      return raw !== '' && Number.isFinite(value) && value > 0 ? value : REFERENCE_DEFAULTS[key]
+    }
+    const saveReference = () => {
+      const next = { referenceCny: readAmount(cnyInput.current, 'referenceCny'), referenceUsd: readAmount(usdInput.current, 'referenceUsd') }
+      setSaveState('saving')
+      fetch(CONFIG_PATH, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(next) })
+        .then(response => response.json())
+        .then(body => { if (body?.ok) { setConfig(body.config); setSaveState('saved') } else setSaveState('failed') })
+        .catch(() => setSaveState('failed'))
+    }
+    const resetReference = () => {
+      if (cnyInput.current) cnyInput.current.value = String(REFERENCE_DEFAULTS.referenceCny)
+      if (usdInput.current) usdInput.current.value = String(REFERENCE_DEFAULTS.referenceUsd)
+      saveReference()
+    }
+    const toggleConfig = () => {
+      if (!showConfig && !config) {
+        fetch(CONFIG_PATH).then(response => response.json()).then(body => { if (body?.ok) setConfig(body.config) }).catch(() => {})
+      }
+      setShowConfig(previous => !previous)
+    }
     const trigger = h('button', {
       type: 'button', className: 'dbc_trigger', 'aria-label': label, 'aria-haspopup': 'dialog', 'aria-expanded': open,
       onClick: () => { setOpen(previous => !previous); if (!open) void store.reread() },
-      children: jsxs('svg', { className: 'dbc_ring', viewBox: '0 0 14 14', 'aria-hidden': true, children: [
-        h('circle', { className: 'dbc_track', cx: 7, cy: 7, r: 5.5, fill: 'none', strokeWidth: 2 }),
-        h('circle', { className: 'dbc_fill', cx: 7, cy: 7, r: 5.5, fill: 'none', strokeWidth: 2, stroke: color, strokeLinecap: 'round', strokeDasharray: ratio === null ? '1 4' : circumference, strokeDashoffset: ratio === null ? 0 : circumference * (1 - ratio) }),
-      ] }),
+      children: jsxs('svg', { className: 'dbc_ring', viewBox: '0 0 20 20', 'aria-hidden': true, children: RINGS.flatMap((radius, index) => {
+        const circumference = 2 * Math.PI * radius
+        const fill = fractions === null ? null : fractions[index]
+        // Usage mode draws one ring per window; balance mode hides rings that hold nothing.
+        const visible = usageMode ? index < usageWallets.length : ringVisible(index, fill)
+        if (!visible) return []
+        const stroke = usageMode ? usageColor(usageWallets[index]) : color
+        return [
+          h('circle', { key: 'track-' + index, className: 'dbc_track', cx: 10, cy: 10, r: radius, fill: 'none', strokeWidth: 1.6 }),
+          h('circle', { key: 'fill-' + index, className: 'dbc_fill', cx: 10, cy: 10, r: radius, fill: 'none', strokeWidth: 1.6, stroke, strokeOpacity: usageMode ? 1 : RING_OPACITY[index], strokeLinecap: 'round', strokeDasharray: fill === null ? '1 4' : circumference, strokeDashoffset: fill === null ? 0 : circumference * (1 - fill) }),
+        ]
+      }) }),
     })
     const rows = []
-    for (const row of snapshot.wallets) {
-      rows.push(h('div', { className: 'dbc_amount', children: money(row) }, row.currency + '-total'))
-      for (const key of ['paid', 'bonus']) if (row[key] !== undefined) rows.push(jsxs('div', { className: 'dbc_row', children: [h('span', { children: key === 'paid' ? '充值余额' : '赠金余额' }), h('span', { children: money({ ...row, total: row[key] }) })] }, row.currency + '-' + key))
+    if (usageMode) {
+      for (const row of usageWallets) rows.push(jsxs('div', { className: 'dbc_row', children: [h('span', { children: (row.label ?? '窗口') + ' 剩余' }), h('span', { children: usagePercent(row) + '%' + (row.resetAt ? ' · 重置 ' + resetText(row.resetAt) : '') })] }, 'usage-' + (row.label ?? row.currency)))
+    } else {
+      for (const row of snapshot.wallets) {
+        rows.push(h('div', { className: 'dbc_amount', children: money(row) }, row.currency + '-total'))
+        for (const key of ['paid', 'bonus']) if (row[key] !== undefined) rows.push(jsxs('div', { className: 'dbc_row', children: [h('span', { children: key === 'paid' ? '充值余额' : '赠金余额' }), h('span', { children: money({ ...row, total: row[key] }) })] }, row.currency + '-' + key))
+      }
     }
     return jsxs('div', { className: 'dbc_root', ref: rootRef, children: [
       h(Tooltip, { label: h('div', { className: 'dbc_tip', children: label }), side: 'top', align: 'end', portal: true, disabled: open, delayMs: 200, children: trigger }),
       open && createPortal(jsxs('div', { className: 'dbc_panel', style: position ?? { visibility: 'hidden', position: 'fixed' }, ref: panelRef, role: 'dialog', 'aria-label': title, children: [
-        jsxs('div', { className: 'dbc_heading', children: [h('span', { children: title }), h('button', { className: 'dbc_refresh', type: 'button', disabled: snapshot.refreshing, onClick: () => { void store.reread() }, children: snapshot.refreshing ? '查询中…' : '刷新' })] }),
+        jsxs('div', { className: 'dbc_heading', children: [
+          h('span', { children: title }),
+          jsxs('div', { className: 'dbc_actions', children: [
+            !usageMode && h('button', { className: 'dbc_gear', type: 'button', 'aria-expanded': showConfig, 'aria-label': '参考金额配置', title: '参考金额配置', onClick: toggleConfig, children: h(GearIcon, { size: 14 }) }),
+            h('button', { className: 'dbc_refresh', type: 'button', disabled: snapshot.refreshing, onClick: () => { void store.reread() }, children: snapshot.refreshing ? '查询中…' : '刷新' }),
+          ] }),
+        ] }),
         h('div', { className: 'dbc_provider', children: (snapshot.provider ?? '正在读取当前模型') + (snapshot.model ? ' / ' + snapshot.model : '') }),
         ...rows,
         !primary && h('div', { className: 'dbc_status', children: statusText(snapshot.state) }),
         snapshot.stale && h('div', { className: 'dbc_status', children: statusText(snapshot.failure) + '，显示上次查询值' }),
         h('div', { className: 'dbc_foot', children: (snapshot.at ? '更新于 ' + clockText(snapshot.at) + ' · ' : '') + '随模型切换刷新 · 每 60 秒更新' }),
-        reference !== null && h('div', { className: 'dbc_foot', children: '圆环显示参考：' + (primary.currency === 'CNY' ? '¥ 50' : '$ 10') + '，不代表账户额度上限' }),
+        !usageMode && showConfig && jsxs('div', { className: 'dbc_cfg', children: [
+          jsxs('div', { className: 'dbc_row', children: [h('span', { children: '满格参考（CNY）' }), h('input', { className: 'dbc_input', type: 'number', min: '0', step: 'any', ref: cnyInput, defaultValue: String(REFERENCE_DEFAULTS.referenceCny) })] }),
+          jsxs('div', { className: 'dbc_row', children: [h('span', { children: '满格参考（USD）' }), h('input', { className: 'dbc_input', type: 'number', min: '0', step: 'any', ref: usdInput, defaultValue: String(REFERENCE_DEFAULTS.referenceUsd) })] }),
+          jsxs('div', { className: 'dbc_cfgbtns', children: [
+            h('span', { className: 'dbc_status', children: saveState === 'saving' ? '保存中…' : saveState === 'saved' ? '已保存' : saveState === 'failed' ? '保存失败' : '' }),
+            h('button', { className: 'dbc_btn', type: 'button', onClick: resetReference, children: '恢复默认' }),
+            h('button', { className: 'dbc_btn', type: 'button', onClick: saveReference, children: '保存' }),
+          ] }),
+        ] }),
+        usageMode && h('div', { className: 'dbc_foot', children: '来源：opencode Go 用量接口 · 圆环为剩余百分比（外圈滚动 / 中圈周 / 内圈月），不代表金额' }),
+        !usageMode && reference !== null && h('div', { className: 'dbc_foot', children: '圆环显示参考：' + (primary.currency === 'CNY' ? '¥ ' : '$ ') + String(Number(reference.toFixed(2))) + ' / 圈 × ' + RINGS.length + ' 圈（最多 ' + (primary.currency === 'CNY' ? '¥ ' : '$ ') + String(Number((reference * RINGS.length).toFixed(2))) + '），不代表账户额度上限' }),
       ] }), document.body),
     ] })
   }
