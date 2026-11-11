@@ -8,9 +8,7 @@ DeepSeek Harness 输入框工具栏的供应商余额圆环。悬停看余额，
 
 ## 界面预览
 
-实际 Harness 界面，圆环位于模型选择器左侧：
-
-![Harness 实机界面的余额圆环位置](preview/dsh-balance-chip-harness.jpg)
+以下图片由 `npm run screenshots` 用模拟数据自动生成：真实组件在无头浏览器中渲染，不读取账号、不含真实余额。
 
 深色主题详情（模拟数据）：
 
@@ -20,7 +18,9 @@ DeepSeek Harness 输入框工具栏的供应商余额圆环。悬停看余额，
 
 ![浅色主题详情（模拟余额）](preview/dsh-balance-chip-light.png)
 
-首张为实际应用截图，已收起侧栏且未展开真实余额；两张详情图使用模拟金额，均不包含测试输出或真实账号数据。
+opencode Go 用量模式（模拟数据，三圈=滚动/周/月剩余百分比）：
+
+![opencode Go 用量模式（模拟用量）](preview/dsh-balance-chip-usage.png)
 
 ## 功能
 
@@ -99,6 +99,7 @@ npm run build
 ```
 
 - check 检查 JavaScript 语法、客户端生成文件一致性和常见私密信息；自动扫描不能替代人工检查。
+- `npm run screenshots` 用无头 Chrome/Edge 重新生成 `preview/` 下的预览图（需要先 `npm install` 装 react/react-dom 开发依赖，可用 `CHROME_PATH` 指定浏览器）。
 - npm test 执行 11 项可移植单元测试，覆盖适配器、错误分类、币种、模型切换与请求竞态。
 - 框架集成测试另有 10 项，需要你自己安装的 Harness app.asar；不会上传或分发该归档。设置 DSH_DESKTOP_ASAR 为本机实际文件的绝对路径后运行：
 

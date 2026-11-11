@@ -62,7 +62,12 @@
     "build": "node build.mjs",
     "check": "node scripts/check.mjs",
     "test": "node --test tests/balance.test.mjs",
-    "test:integration": "node --test tests/cordis.test.mjs tests/typert.test.mjs"
+    "test:integration": "node --test tests/cordis.test.mjs tests/typert.test.mjs",
+    "screenshots": "node scripts/screenshots.mjs"
+  },
+  "devDependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "repository": {
     "type": "git",
